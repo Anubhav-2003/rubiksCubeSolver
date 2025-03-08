@@ -15,7 +15,7 @@ class RubiksCube {
             WHITE, RED, GREEN, YELLOW, BLUE, ORANGE
         };
 
-        enum class MOVES {
+        enum class MOVE {
             R, RPRIME, R2,
             L, LPRIME, L2,
             U, PRIME, U2,
