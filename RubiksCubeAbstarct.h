@@ -1,3 +1,6 @@
+#ifndef RUBIKS_CUBE_ABSTRACT_H
+#define RUBIKS_CUBE_ABSTRACT_H
+
 #include "bits/stdc++.h"
 
 using namespace std;
@@ -77,5 +80,5 @@ class RubiksCube {
 
         int getCornerIndex(int ind) const;
 
-        int getCornerOrientation(int ind) const;
+        int getCornerOrientation(int ind) const;    
 }
