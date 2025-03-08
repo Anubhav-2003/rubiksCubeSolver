@@ -82,3 +82,5 @@ class RubiksCube {
 
         int getCornerOrientation(int ind) const;    
 }
+
+#endif
