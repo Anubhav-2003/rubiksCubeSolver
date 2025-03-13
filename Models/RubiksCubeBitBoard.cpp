@@ -40,15 +40,15 @@ private:
         }
 
         for (auto ch: corner) {
-            if (ch != 'R' && cch != 'O') continue;
+            if (ch != 'R' && ch != 'O') continue;
             if (ch == 'O') {
                 r |= (1 << 1);
             }
         }
 
         for (auto ch: corner) {
-            if (c != 'B' && c != 'G') continue;
-            if (c == 'G') {
+            if (ch != 'B' && ch != 'G') continue;
+            if (ch == 'G') {
                 r |= (1 << 0);
             }
         }
@@ -64,7 +64,7 @@ private:
 public:
     uint64_t state[6]{};
 
-    RubiksCubeBitset() {
+    RubiksCubeBitBoard() {
         for (int face = 0; face < 6; face++) {
             uint64_t mask = 1 << face;
             state[face] = 0;
@@ -75,12 +75,12 @@ public:
         }
     }
 
-    COLOR getColor(FACE face, unsigned row, unsigned col) const override {
+    COLOR getColor(FACE face, int row, int col) const override {
         int pos = arr[row][col];
         if (pos == 8) return (COLOR)((int) face);
 
         uint64_t side = state[(int) face];
-        uint64_t color = (side >> (8 * pos)) & one_8;
+        uint64_t color = (side >> (8 * pos)) & one_eight;
 
         int bit_pos = 0;
         while (color != 0) {
@@ -99,11 +99,11 @@ public:
 
     RubiksCube &u() override {
         this->rotateFace(0);
-        uint64_t temp = state[2] & one_24;
-        state[2] = (state[2] & ~one_24) | (state[3] & one_24);
-        state[3] = (state[3] & ~one_24) | (state[4] & one_24);
-        state[4] = (state[4] & ~one_24) | (state[1] & one_24);
-        state[1] = (state[1] & ~one_24) | temp;
+        uint64_t temp = state[2] & one_twenty_four;
+        state[2] = (state[2] & ~one_twenty_four) | (state[3] & one_twenty_four);
+        state[3] = (state[3] & ~one_twenty_four) | (state[4] & one_twenty_four);
+        state[4] = (state[4] & ~one_twenty_four) | (state[1] & one_twenty_four);
+        state[1] = (state[1] & ~one_twenty_four) | temp;
 
         return *this;
     }
@@ -125,17 +125,17 @@ public:
 
      RubiksCube &l() override {
         this->rotateFace(1);
-        uint64_t clr1 = (state[2] & (one_8 << (8 * 0))) >> (8 * 0);
-        uint64_t clr2 = (state[2] & (one_8 << (8 * 6))) >> (8 * 6);
-        uint64_t clr3 = (state[2] & (one_8 << (8 * 7))) >> (8 * 7);
+        uint64_t clr1 = (state[2] & (one_eight << (8 * 0))) >> (8 * 0);
+        uint64_t clr2 = (state[2] & (one_eight << (8 * 6))) >> (8 * 6);
+        uint64_t clr3 = (state[2] & (one_eight << (8 * 7))) >> (8 * 7);
 
         this->rotateSide(2, 0, 7, 6, 0, 0, 7, 6);
         this->rotateSide(0, 0, 7, 6, 4, 4, 3, 2);
         this->rotateSide(4, 4, 3, 2, 5, 0, 7, 6);
 
-        state[5] = (state[5] & ~(one_8 << (8 * 0))) | (clr1 << (8 * 0));
-        state[5] = (state[5] & ~(one_8 << (8 * 6))) | (clr2 << (8 * 6));
-        state[5] = (state[5] & ~(one_8 << (8 * 7))) | (clr3 << (8 * 7));
+        state[5] = (state[5] & ~(one_eight << (8 * 0))) | (clr1 << (8 * 0));
+        state[5] = (state[5] & ~(one_eight << (8 * 6))) | (clr2 << (8 * 6));
+        state[5] = (state[5] & ~(one_eight << (8 * 7))) | (clr3 << (8 * 7));
 
         return *this;
 
@@ -160,17 +160,17 @@ public:
     RubiksCube &f() override {
         this->rotateFace(2);
 
-        uint64_t clr1 = (state[0] & (one_8 << (8 * 4))) >> (8 * 4);
-        uint64_t clr2 = (state[0] & (one_8 << (8 * 5))) >> (8 * 5);
-        uint64_t clr3 = (state[0] & (one_8 << (8 * 6))) >> (8 * 6);
+        uint64_t clr1 = (state[0] & (one_eight << (8 * 4))) >> (8 * 4);
+        uint64_t clr2 = (state[0] & (one_eight << (8 * 5))) >> (8 * 5);
+        uint64_t clr3 = (state[0] & (one_eight << (8 * 6))) >> (8 * 6);
 
         this->rotateSide(0, 4, 5, 6, 1, 2, 3, 4);
         this->rotateSide(1, 2, 3, 4, 5, 0, 1, 2);
         this->rotateSide(5, 0, 1, 2, 3, 6, 7, 0);
 
-        state[3] = (state[3] & ~(one_8 << (8 * 6))) | (clr1 << (8 * 6));
-        state[3] = (state[3] & ~(one_8 << (8 * 7))) | (clr2 << (8 * 7));
-        state[3] = (state[3] & ~(one_8 << (8 * 0))) | (clr3 << (8 * 0));
+        state[3] = (state[3] & ~(one_eight << (8 * 6))) | (clr1 << (8 * 6));
+        state[3] = (state[3] & ~(one_eight << (8 * 7))) | (clr2 << (8 * 7));
+        state[3] = (state[3] & ~(one_eight << (8 * 0))) | (clr3 << (8 * 0));
 
         return *this;
     };
@@ -192,17 +192,17 @@ public:
 
     RubiksCube &r() override {
         this->rotateFace(3);
-        uint64_t clr1 = (state[0] & (one_8 << (8 * 2))) >> (8 * 2);
-        uint64_t clr2 = (state[0] & (one_8 << (8 * 3))) >> (8 * 3);
-        uint64_t clr3 = (state[0] & (one_8 << (8 * 4))) >> (8 * 4);
+        uint64_t clr1 = (state[0] & (one_eight << (8 * 2))) >> (8 * 2);
+        uint64_t clr2 = (state[0] & (one_eight << (8 * 3))) >> (8 * 3);
+        uint64_t clr3 = (state[0] & (one_eight << (8 * 4))) >> (8 * 4);
 
         this->rotateSide(0, 2, 3, 4, 2, 2, 3, 4);
         this->rotateSide(2, 2, 3, 4, 5, 2, 3, 4);
         this->rotateSide(5, 2, 3, 4, 4, 7, 6, 0);
 
-        state[4] = (state[4] & ~(one_8 << (8 * 7))) | (clr1 << (8 * 7));
-        state[4] = (state[4] & ~(one_8 << (8 * 6))) | (clr2 << (8 * 6));
-        state[4] = (state[4] & ~(one_8 << (8 * 0))) | (clr3 << (8 * 0));
+        state[4] = (state[4] & ~(one_eight << (8 * 7))) | (clr1 << (8 * 7));
+        state[4] = (state[4] & ~(one_eight << (8 * 6))) | (clr2 << (8 * 6));
+        state[4] = (state[4] & ~(one_eight << (8 * 0))) | (clr3 << (8 * 0));
 
         return *this;
     };
@@ -225,17 +225,17 @@ public:
     RubiksCube &b() override {
         this->rotateFace(4);
 
-        uint64_t clr1 = (state[0] & (one_8 << (8 * 0))) >> (8 * 0);
-        uint64_t clr2 = (state[0] & (one_8 << (8 * 1))) >> (8 * 1);
-        uint64_t clr3 = (state[0] & (one_8 << (8 * 2))) >> (8 * 2);
+        uint64_t clr1 = (state[0] & (one_eight << (8 * 0))) >> (8 * 0);
+        uint64_t clr2 = (state[0] & (one_eight << (8 * 1))) >> (8 * 1);
+        uint64_t clr3 = (state[0] & (one_eight << (8 * 2))) >> (8 * 2);
 
         this->rotateSide(0, 0, 1, 2, 3, 2, 3, 4);
         this->rotateSide(3, 2, 3, 4, 5, 4, 5, 6);
         this->rotateSide(5, 4, 5, 6, 1, 6, 7, 0);
 
-        state[1] = (state[1] & ~(one_8 << (8 * 6))) | (clr1 << (8 * 6));
-        state[1] = (state[1] & ~(one_8 << (8 * 7))) | (clr2 << (8 * 7));
-        state[1] = (state[1] & ~(one_8 << (8 * 0))) | (clr3 << (8 * 0));
+        state[1] = (state[1] & ~(one_eight << (8 * 6))) | (clr1 << (8 * 6));
+        state[1] = (state[1] & ~(one_eight << (8 * 7))) | (clr2 << (8 * 7));
+        state[1] = (state[1] & ~(one_eight << (8 * 0))) | (clr3 << (8 * 0));
 
         return *this;
     };
@@ -258,17 +258,17 @@ public:
     RubiksCube &d() override {
         this->rotateFace(5);
 
-        uint64_t clr1 = (state[2] & (one_8 << (8 * 4))) >> (8 * 4);
-        uint64_t clr2 = (state[2] & (one_8 << (8 * 5))) >> (8 * 5);
-        uint64_t clr3 = (state[2] & (one_8 << (8 * 6))) >> (8 * 6);
+        uint64_t clr1 = (state[2] & (one_eight << (8 * 4))) >> (8 * 4);
+        uint64_t clr2 = (state[2] & (one_eight << (8 * 5))) >> (8 * 5);
+        uint64_t clr3 = (state[2] & (one_eight << (8 * 6))) >> (8 * 6);
 
         this->rotateSide(2, 4, 5, 6, 1, 4, 5, 6);
         this->rotateSide(1, 4, 5, 6, 4, 4, 5, 6);
         this->rotateSide(4, 4, 5, 6, 3, 4, 5, 6);
 
-        state[3] = (state[3] & ~(one_8 << (8 * 4))) | (clr1 << (8 * 4));
-        state[3] = (state[3] & ~(one_8 << (8 * 5))) | (clr2 << (8 * 5));
-        state[3] = (state[3] & ~(one_8 << (8 * 6))) | (clr3 << (8 * 6));
+        state[3] = (state[3] & ~(one_eight << (8 * 4))) | (clr1 << (8 * 4));
+        state[3] = (state[3] & ~(one_eight << (8 * 5))) | (clr2 << (8 * 5));
+        state[3] = (state[3] & ~(one_eight << (8 * 6))) | (clr3 << (8 * 6));
 
         return *this;
     };
@@ -288,14 +288,14 @@ public:
         return *this;
     }
 
-    bool operator==(const RubiksCubeBitboard &r1) const {
+    bool operator==(const RubiksCubeBitBoard &r1) const {
         for (int i = 0; i < 6; i++) {
             if (state[i] != r1.state[i]) return false;
         }
         return true;
     }
 
-    RubiksCubeBitboard &operator=(const RubiksCubeBitboard &r1) {
+    RubiksCubeBitBoard &operator=(const RubiksCubeBitBoard &r1) {
         for (int i = 0; i < 6; i++) {
             state[i] = r1.state[i];
         }
@@ -373,10 +373,10 @@ public:
     }
 
     struct CubeBitboardHash {
-    size_t operator()(const RubiksCubeBitboard &r1) const {
-        uint64_t final_hash = r1.bitboard[0];
-        for (int i = 1; i < 6; i++) final_hash ^= r1.bitboard[i];
-        return (size_t) final_hash;
-    }
-};
+        size_t operator()(const RubiksCubeBitBoard &r1) const {
+            uint64_t final_hash = r1.state[0];
+            for (int i = 1; i < 6; i++) final_hash ^= r1.state[i];
+            return (size_t) final_hash;
+        }
+    };
 };

@@ -18,7 +18,7 @@ class RubiksCube {
         enum class MOVE {
             R, RPRIME, R2,
             L, LPRIME, L2,
-            U, PRIME, U2,
+            U, UPRIME, U2,
             D, DPRIME, D2,
             F, FPRIME, F2,
             B, BPRIME, B2
@@ -81,6 +81,6 @@ class RubiksCube {
         int getCornerIndex(int ind) const;
 
         int getCornerOrientation(int ind) const;    
-}
+};
 
 #endif
