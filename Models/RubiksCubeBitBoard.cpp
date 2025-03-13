@@ -288,5 +288,95 @@ public:
         return *this;
     }
 
-    
-}
+    bool operator==(const RubiksCubeBitboard &r1) const {
+        for (int i = 0; i < 6; i++) {
+            if (state[i] != r1.state[i]) return false;
+        }
+        return true;
+    }
+
+    RubiksCubeBitboard &operator=(const RubiksCubeBitboard &r1) {
+        for (int i = 0; i < 6; i++) {
+            state[i] = r1.state[i];
+        }
+        return *this;
+    }
+
+
+    uint64_t getCorners() {
+        uint64_t cornerState = 0;
+        string top_front_right = "";
+        top_front_right += getColorCode(getColor(FACE::UP, 2, 2));
+        top_front_right += getColorCode(getColor(FACE::FRONT, 0, 2));
+        top_front_right += getColorCode(getColor(FACE::RIGHT, 0, 0));
+
+        string top_front_left = "";
+        top_front_left += getColorCode(getColor(FACE::UP, 2, 0));
+        top_front_left += getColorCode(getColor(FACE::FRONT, 0, 0));
+        top_front_left += getColorCode(getColor(FACE::LEFT, 0, 2));
+
+        string top_back_left = "";
+        top_back_left += getColorCode(getColor(FACE::UP, 0, 0));
+        top_back_left += getColorCode(getColor(FACE::BACK, 0, 2));
+        top_back_left += getColorCode(getColor(FACE::LEFT, 0, 0));
+
+        string top_back_right = "";
+        top_back_right += getColorCode(getColor(FACE::UP, 0, 2));
+        top_back_right += getColorCode(getColor(FACE::BACK, 0, 0));
+        top_back_right += getColorCode(getColor(FACE::RIGHT, 0, 2));
+
+        string bottom_front_right = "";
+        bottom_front_right += getColorCode(getColor(FACE::DOWN, 0, 2));
+        bottom_front_right += getColorCode(getColor(FACE::FRONT, 2, 2));
+        bottom_front_right += getColorCode(getColor(FACE::RIGHT, 2, 0));
+
+        string bottom_front_left = "";
+        bottom_front_left += getColorCode(getColor(FACE::DOWN, 0, 0));
+        bottom_front_left += getColorCode(getColor(FACE::FRONT, 2, 0));
+        bottom_front_left += getColorCode(getColor(FACE::LEFT, 2, 2));
+
+        string bottom_back_right = "";
+        bottom_back_right += getColorCode(getColor(FACE::DOWN, 2, 2));
+        bottom_back_right += getColorCode(getColor(FACE::BACK, 2, 0));
+        bottom_back_right += getColorCode(getColor(FACE::RIGHT, 2, 2));
+
+        string bottom_back_left = "";
+        bottom_back_left += getColorCode(getColor(FACE::DOWN, 2, 0));
+        bottom_back_left += getColorCode(getColor(FACE::BACK, 2, 2));
+        bottom_back_left += getColorCode(getColor(FACE::LEFT, 2, 0));
+
+        cornerState |= getFiveBitCorner(top_front_right);
+        cornerState = cornerState << 5;
+
+        cornerState |= getFiveBitCorner(top_front_left);
+        cornerState = cornerState << 5;
+
+        cornerState |= getFiveBitCorner(top_back_right);
+        cornerState = cornerState << 5;
+
+        cornerState |= getFiveBitCorner(top_back_left);
+        cornerState = cornerState << 5;
+
+        cornerState |= getFiveBitCorner(bottom_front_right);
+        cornerState = cornerState << 5;
+
+        cornerState |= getFiveBitCorner(bottom_front_left);
+        cornerState = cornerState << 5;
+
+        cornerState |= getFiveBitCorner(bottom_back_right);
+        cornerState = cornerState << 5;
+
+        cornerState |= getFiveBitCorner(bottom_back_left);
+        cornerState = cornerState << 5;
+
+        return cornerState;
+    }
+
+    struct CubeBitboardHash {
+    size_t operator()(const RubiksCubeBitboard &r1) const {
+        uint64_t final_hash = r1.bitboard[0];
+        for (int i = 1; i < 6; i++) final_hash ^= r1.bitboard[i];
+        return (size_t) final_hash;
+    }
+};
+};
