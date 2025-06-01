@@ -12,10 +12,10 @@ CornerPatternDatabaseBuilder::CornerPatternDatabaseBuilder(string _filePath, uin
 }
 
 bool CornerPatternDatabaseBuilder::generateDatabaseWithBFS() {
-    RubiksCubeBitboard initialCube;
-    queue<RubiksCubeBitboard> cubeQueue;
+    RubiksCubeBitBoard initialCube;
+    queue<RubiksCubeBitBoard> cubeQueue;
     cubeQueue.push(initialCube);
-    cornerDatabase.setNumMoves(initialCube, 0);
+    cornerDatabase.setMoveCount(initialCube, 0);
 
     int currentDepth = 0;
 
@@ -26,15 +26,15 @@ bool CornerPatternDatabaseBuilder::generateDatabaseWithBFS() {
         if (currentDepth == 9) break;
 
         for (int i = 0; i < levelSize; i++) {
-            RubiksCubeBitboard currentCube = cubeQueue.front();
+            RubiksCubeBitBoard currentCube = cubeQueue.front();
             cubeQueue.pop();
 
             for (int moveIndex = 0; moveIndex < 18; moveIndex++) {
                 auto move = RubiksCube::MOVE(moveIndex);
                 currentCube.move(move);
 
-                if ((int)cornerDatabase.getNumMoves(currentCube) > currentDepth) {
-                    cornerDatabase.setNumMoves(currentCube, currentDepth);
+                if ((int)cornerDatabase.getMoveCount(currentCube) > currentDepth) {
+                    cornerDatabase.setMoveCount(currentCube, currentDepth);
                     cubeQueue.push(currentCube);
                 }
 
@@ -43,6 +43,6 @@ bool CornerPatternDatabaseBuilder::generateDatabaseWithBFS() {
         }
     }
 
-    cornerDatabase.toFile(filePath);
+    cornerDatabase.writeToFile(filePath);
     return true;
 }

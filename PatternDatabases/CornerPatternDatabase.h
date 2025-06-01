@@ -5,7 +5,7 @@
 #include "MoveCountDatabase.h"
 #include "PermutationIndexer.h"
 
-class CornerPatternDatabase : public PatternDatabase {
+class CornerPatternDatabase : public MoveCountDatabase {
 private:
     using Face = RubiksCube::FACE;
 

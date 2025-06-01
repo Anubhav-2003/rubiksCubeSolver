@@ -6,13 +6,13 @@
 #define RUBIKS_CUBE_SOLVER_MOVE_COUNT_DATABASE_H
 
 #include "../Models/RubiksCubeAbstract.h"
-#include "NibbleArray.h"
+#include "NibbleStorage.h"
 #include <vector>
 #include <string>
 
 class MoveCountDatabase {
 protected:
-    NibbleArray moveCounts;
+    NibbleStorage moveCounts;
     size_t capacity;
     size_t filledEntries;
 

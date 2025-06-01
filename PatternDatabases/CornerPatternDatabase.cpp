@@ -1,10 +1,10 @@
 #include "CornerPatternDatabase.h"
 
 CornerPatternDatabase::CornerPatternDatabase()
-    : PatternDatabase(100179840) {}
+    : MoveCountDatabase(100179840) {}
 
 CornerPatternDatabase::CornerPatternDatabase(uint8_t initialValue)
-    : PatternDatabase(100179840, initialValue) {}
+    : MoveCountDatabase(100179840, initialValue) {}
 
 uint32_t CornerPatternDatabase::getDatabaseIndex(const RubiksCube &cube) const {
     std::array<uint8_t, 8> cornerPermutation = {
@@ -18,7 +18,7 @@ uint32_t CornerPatternDatabase::getDatabaseIndex(const RubiksCube &cube) const {
         cube.getCornerIndex(7),
     };
 
-    uint32_t permutationRank = this->permIndexer.rank(cornerPermutation);
+    uint32_t permutationRank = this->cornerPermutationIndexer.rank(cornerPermutation);
 
     std::array<uint8_t, 7> cornerOrientation = {
         cube.getCornerOrientation(0),
