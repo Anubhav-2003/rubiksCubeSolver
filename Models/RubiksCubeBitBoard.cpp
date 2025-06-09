@@ -371,12 +371,12 @@ public:
 
         return cornerState;
     }
+};
 
-    struct CubeBitboardHash {
-        size_t operator()(const RubiksCubeBitBoard &r1) const {
-            uint64_t final_hash = r1.state[0];
-            for (int i = 1; i < 6; i++) final_hash ^= r1.state[i];
-            return (size_t) final_hash;
-        }
-    };
+struct CubeBitboardHash {
+    size_t operator()(const RubiksCubeBitBoard &r1) const {
+        uint64_t final_hash = r1.state[0];
+        for (int i = 1; i < 6; i++) final_hash ^= r1.state[i];
+        return (size_t) final_hash;
+    }
 };
