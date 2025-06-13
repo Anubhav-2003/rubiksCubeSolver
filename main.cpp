@@ -173,18 +173,18 @@ int main(){
 
   //DFS Testing*****************************************************************
 
-  RubiksCube3DArray cube;
-  cube.printCube();
+  RubiksCube3DArray cube0;
+  cube0.printCube();
 
-  vector<RubiksCube:: MOVE> shuffle_move=cube.ShuffleCube(6);
-  for(auto move:shuffle_move) cout<< cube.getMove(move)<<" ";
+  vector<RubiksCube:: MOVE> shuffle_move=cube0.ShuffleCube(6);
+  for(auto move:shuffle_move) cout<< cube0.getMove(move)<<" ";
   cout<<"\n";
-  cube.printCube();
+  cube0.printCube();
 
-  DFSSolver<RubiksCube3DArray,Hash3D>dfssolver(cube,8);
+  DFSSolver<RubiksCube3DArray,Hash3D>dfssolver(cube0,8);
   vector<RubiksCube::MOVE>solve_moves=dfssolver.solve();
 
-  for(auto move:solve_moves) cout<<cube.getMove(move)<<" ";
+  for(auto move:solve_moves) cout<<cube0.getMove(move)<<" ";
   cout<<"\n";
   dfssolver.rubiksCube.printCube();
 
@@ -199,12 +199,13 @@ int main(){
   cout<<"\n";
   cube.printCube();
 
-  bfs_solver<RubiksCubeBitBoard,CubeBitboardHash>bfssolver(rubkis_cube);
+  bfs_solver<RubiksCubeBitBoard,CubeBitboardHash>bfssolver(cube);
+  
   vector<RubiksCube::MOVE>solve_moves=bfssolver.solve();
 
   for(auto move:solve_moves) cout << cube.getMove(move)<<" ";
   cout<<"\n";
-  bfssolver.rubkisCube.printCube();
+  bfssolver.rubiks_cube.printCube();
   
   //IDDFS Testing***************************************************************
 
@@ -214,7 +215,7 @@ int main(){
   for(auto move: shuffle_move) cout<<cube.getMove(move)<<" ";
   cout<<"\n";
   cube.printCube();
-  IDDFSSolver<RubiksCubeBitBoard,CubeBitboardHash>iddfsSolver(cube,7);
+  IDDFSSolver<RubiksCubeBitBoard,CubeBitboardHash>iddfsSolver(cube);
   vector<RubiksCube::MOVE>solve_moves=iddfsSolver.solve();
   for(auto move:solve_moves) cout << cube.getMove(move)<<" ";
   cout<<"\n";
@@ -222,16 +223,17 @@ int main(){
 
   //IDA* Solver*****************************************************************
 
-  RubiksCubeBitBoard cube;
-  cube.printCube();
-  vector<RubiksCube::MOVE>shuffle_move=cube.ShuffleCube(5);
-  for(auto move: shuffle_move) cout<<cube.getMove(move)<<" ";
+  RubiksCubeBitBoard cube_state;
+  cube_state.printCube();
+  vector<RubiksCube::MOVE>shuffle_move=cube_state.ShuffleCube(5);
+  for(auto move: shuffle_move) cout<<cube_state.getMove(move)<<" ";
   cout<<"\n";
-  cube.printCube();
+  cube_state.printCube();
+  string db_file="CornerDepth.txt";
+  ida_star_solver<RubiksCubeBitBoard,CubeBitboardHash>idastarSolver(cube_state,db_file);
 
-  ida_star_solver<RubiksCubeBitBoard,CubeBitboardHash>idastarSolver(cube);
   vector<RubiksCube::MOVE>solve_moves=idastarSolver.find_solution();
-  for(auto move:solve_moves) cout << cube.getMove(move)<<" ";
+  for(auto move:solve_moves) cout << cube_state.getMove(move)<<" ";
   cout<<"\n";
   idastarSolver.initial_cube.printCube();
 
@@ -265,10 +267,7 @@ int main(){
   ida_star_solver<RubiksCubeBitBoard,CubeBitboardHash>idAstarSolver(cube,fileName);
   auto move=idAstarSolver.find_solution();
   idAstarSolver.initial_cube.printCube();
-  for(auto moves: move) cout<<cube.getMove()<<" ";
+  for(auto moves: move) cout<<cube.getMove(moves)<<" ";
   cout<<"\n";
-  return 0;
-
-
-  
+  return 0;  
 }
